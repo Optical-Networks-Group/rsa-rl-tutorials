@@ -111,13 +111,14 @@ def main():
         print(f'[{env_id}-th ENV]Blocking Probability: {bp}')
         print(f'[{env_id}-th ENV]Avg. Slot-utilization: {avg_util}')
         print(f'[{env_id}-th ENV]Total Rewards: {t_rw}')
-
+        if args.save:
+            batch = 1
+            # save evaluation
+            db.save_evaluation(env_id, batch, bp, avg_util, t_rw)
+            
     # save
     if args.save:
-        batch = 1
         exp_id = int(np.argmin(blocking_probs))
-        # save evaluation
-        db.save_evaluation(exp_id, batch, blocking_probs[exp_id], avg_utils[exp_id], total_rewards[exp_id])
         # save each experience
         db.save_experience(experiences[exp_id])
         db.close()
